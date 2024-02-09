@@ -1,3 +1,14 @@
+#leer archivo
+# Abre el archivo en modo de lectura
+with open('test.txt', 'r') as archivo:
+    # Recorre cada línea del archivo
+    for linea in archivo:
+        # Elimina los espacios en blanco al principio y al final de la línea
+        linea = linea.strip()
+        print(linea)
+
+
+
 
 #-->(null): a instruction that does not do anything
 
