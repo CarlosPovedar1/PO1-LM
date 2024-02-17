@@ -1,8 +1,23 @@
 import ply.lex as lex
+import commands as cd
+
+
+
 
 tokens = ["nombre", "move", "skip", "turn", "face", "put",
            "pick", "move_dir", "run_dirs", "move_face", "null", "conditional",
            "loop", "repeat", "defun", "fun_call", "left_parenth", "right_parenth", "variable", "number", "if", "defvar", "cardinal", "direction", "comma", "i_objects"]
+
+
+
+"""
+for linea in archivo:
+                # Elimina los espacios en blanco al principio y al final de la línea
+                linea = linea.strip()
+                print(linea)"""
+
+
+    
 
 
 def t_defvar(t):
@@ -107,7 +122,32 @@ def t_error(t):
 
 t_ignore = ' \t'
 
-lexer = lex.lex()
+
+def print_menu():
+    print("Bienvenido")
+    print("1- Cargar archivo txt")
+    print("0- Salir")
+
+working = True
+while working:
+    print_menu()
+    inputs = input('Seleccione una opción para continuar\n')
+    if int(inputs) == 1:
+        file = str(input('digite el archivo sin txt: '))
+        with open(f'{file}.txt', 'r') as archivo:
+            
+            lexer = lex.lex()
+            for linea in archivo:
+                lexer.input(linea)
+                while True:
+                    tok = lexer.token()
+                    if not tok:
+                        break  # No more input
+                    print(tok)
+    elif int(inputs) ==0:
+            working= False
+
+"""lexer = lex.lex()
 data = "(defun goend() (if (not (blocked?)) ((pick :balloons 5) (goend))(null)))"
 lexer.input(data)
 while True:
@@ -115,7 +155,7 @@ while True:
     if not tok:
         break  # No more input
     print(tok)
-
+"""
 
 
 
