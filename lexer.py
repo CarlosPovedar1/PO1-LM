@@ -15,7 +15,7 @@ tokens = ["nombre", "move", "skip", "turn", "face", "put",
 def t_defvar(t):
     r'defvar'
     return t
-def t_run_dirs(t):
+def t_equals(t):
     r'equals'
     return t
 
@@ -115,7 +115,7 @@ def t_error(t):
     print("Carácter ilegal: '%s'" % t.value[0])
     t.lexer.skip(1)
 
-t_ignore = ' \t'
+t_ignore = ' \t|\n'
 
 
 def print_menu():
@@ -160,30 +160,32 @@ while working:
                 elif cd.iscommand(lista[i]) == True:
                     if lista[i].type == 'defvar' or lista[i].type=='equals' or lista[i].type == 'put' or lista[i].type == 'pick' or lista[i].type=="move_dir" or lista[i].type=="move_face":
                         if cd.isdefvar(lista[i]) ==True:
-                            cd.defvar(lista,i) 
+                            respuesta,i =cd.defvar(lista,i) 
                         if cd.isequals(lista[i]) ==True:
-                            cd.equals(lista,i) 
+                            respuesta,i= cd.equals(lista,i) 
                         if cd.isput(lista[i]) ==True:
-                            cd.put(lista,i) 
+                            respuesta,i =cd.put(lista,i) 
                         if cd.ispick(lista[i]) ==True:
-                            cd.pick(lista,i) 
+                            respuesta,i =cd.pick(lista,i) 
                         if cd.ismove_dir(lista[i]) ==True:
-                            cd.move_dir(lista,i)
+                            respuesta,i =cd.move_dir(lista,i)
                         if cd.ismove_face(lista[i]) ==True:
-                            cd.move_face(lista,i) 
+                            respuesta,i=cd.move_face(lista,i) 
                     else:
                         if cd.ismove(lista[i]) ==True:
-                            cd.move(lista,i) 
-                        if cd.isdefvar(lista[i]) ==True:
-                            cd.defvar(lista,i) 
-                        if cd.isdefvar(lista[i]) ==True:
-                            cd.defvar(lista,i) 
-                        if cd.isdefvar(lista[i]) ==True:
-                            cd.defvar(lista,i) 
-                        if cd.isdefvar(lista[i]) ==True:
-                            cd.defvar(lista,i)
-                        if cd.isdefvar(lista[i]) ==True:
-                            cd.defvar(lista,i)
+                            respuesta,i= cd.move(lista,i) 
+                        if cd.isskip(lista[i]) ==True:
+                            respuesta,i=cd.skip(lista,i) 
+                        if cd.isturn(lista[i]) ==True:
+                            respuesta,i= cd.turn(lista,i) 
+                        if cd.isface(lista[i]) ==True:
+                            respuesta,i= cd.face(lista,i) 
+                        if cd.isrun_dirs(lista[i]) ==True:
+                            respuesta,i=cd.run_dirs(lista,i)
+                        if cd.isnull(lista[i]) ==True:
+                            respuesta= True
+                        else:
+                            respuesta= False
 
 
                 #conditional
@@ -225,7 +227,7 @@ while working:
                                                         if lista[i+1].type == 'left_parenth':
                                                             contador -=1
 
-                    
+                
                     
                 i+=1
             if contador ==0 and respuesta ==True:
@@ -237,15 +239,6 @@ while working:
     elif int(inputs) ==0:
             working= False
 
-"""lexer = lex.lex()
-data = "(defun goend() (if (not (blocked?)) ((pick :balloons 5) (goend))(null)))"
-lexer.input(data)
-while True:
-    tok = lexer.token()
-    if not tok:
-        break  # No more input
-    print(tok)
-"""
 
 
 

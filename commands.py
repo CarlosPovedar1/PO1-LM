@@ -65,7 +65,7 @@ def defvar(lista,i):
         if lista[i+1].type == 'number':
             respuesta =True
             i+=1
-    return respuesta
+    return respuesta,i
 
 #command =
 def isequals(token):
@@ -88,7 +88,7 @@ def equals(lista,i):
             i+=1
     return respuesta
 #command move
-def move(token):
+def ismove(token):
     """where n is a number or a variable or a constant. The robot
     should move n steps forward."""
     if token.type =="move":
@@ -102,17 +102,24 @@ def move(lista,i):
         respuesta =True
         i+=1
     return respuesta
+
     
 #command skip
-def skip(token):
+def isskip(token):
     """where n is a number or a variable or a constant. The robot
     should jump n steps forward."""
-    if token.type =="defvar":
+    if token.type =="skip":
         return True
     else:
         return False
+def skip(lista,i):
+    respuesta = False
+    if lista[i+1].type == 'number':
+        respuesta =True
+        i+=1
+    return respuesta
 #command turn 
-def turn(token):
+def isturn(token):
     """where D can be :left, :right, or :around (defined as constants).
     The robot should turn 90 degrees in the direction of the parameter in the
     first to cases, and 180 in the last case."""
@@ -120,15 +127,31 @@ def turn(token):
         return True
     else:
         return False
-    return x
+def turn(lista,i):
+    respuesta = False
+    if lista[i+1].type == 'direction':
+        respuesta =True
+        i+=1
+    return respuesta
+
+
+
+
 #command face 
-def face(token):
+def isface(token):
     """where O can be :north, :south, :east, or :west (all constants).
     The robot should turn so that it ends up facing direction O."""
     if token.type =="face":
         return True
     else:
         return False
+    
+def face(lista,i):
+    respuesta = False
+    if lista[i+1].type == 'cardinal':
+        respuesta =True
+        i+=1
+    return respuesta
 # command put
 def isput(token):
     """where X corresponds to either :balloons or :chips, and n is a
@@ -139,7 +162,7 @@ def isput(token):
         return False
 def put(lista,i):
     respuesta = False
-    if lista[i+1].type== 'nombre':
+    if lista[i+1].type== 'i_objects':
         respuesta = True
         i+=1
         z=lista[i+1]
@@ -157,11 +180,12 @@ def ispick(token):
     else:
         return False
     
+    
 def pick(lista,i):
     """where X is either :balloons or :chips, and n is a number or
     a variable. The robot should pick n X’s."""
     respuesta = False
-    if lista[i+1].type== 'nombre':
+    if lista[i+1].type== 'i_objects':
         respuesta = True
         i+=1
         z=lista[i+1]
@@ -182,23 +206,30 @@ def ismove_dir(token):
     
 def move_dir(lista,i):
     respuesta = False
-    if lista[i+1].type== 'nombre':
+    if lista[i+1].type== 'number':
         respuesta = True
         i+=1
         z=lista[i+1]
-        if lista[i+1].type == 'number':
+        if lista[i+1].type == 'cardinal':
             respuesta =True
             i+=1
     return respuesta
 #command run_dirs
-def run_dirs(token):
+def isrun_dirs(token):
     """where Ds is a non-empty list of directions: :front, :right,
     :left, :back. The robot should move in the directions indicated by the
     list and end up facing the same direction as it started."""
-    if token.type =="defvar":
+    if token.type =="run_dirs":
         return True
     else:
         return False
+def run_dirs(lista,i):
+    respuesta = False
+    if lista[i+1].type == 'direction':
+        respuesta =True
+        i+=1
+    return respuesta
+
 #command move-face
 def ismove_face(token):
     """here n is a number or a variable. O is :north, :south,
@@ -209,14 +240,20 @@ def ismove_face(token):
         return False
 def move_face(lista,i):
     respuesta = False
-    if lista[i+1].type== 'nombre':
+    if lista[i+1].type== 'number':
         respuesta = True
         i+=1
         z=lista[i+1]
-        if lista[i+1].type == 'number':
+        if lista[i+1].type == 'cardinal':
             respuesta =True
             i+=1
     return respuesta
+def isnull(token):
+    if token.type =="null":
+        return True
+    else:
+        return False
+
     
 def iscommand(token):
     if token.type =="defvar":
