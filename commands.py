@@ -7,24 +7,13 @@
 
 
 #control structure
-def Conditional( lista:list): 
+def Conditional(token): 
     """Executes B1 if condition is true and
     B2 if condition is false. B1 and B2 can be a single command or a Block"""
-    list[0] = si
-    list[1]= condition
-    list[2]= B1
-    list[3]= B2
-    x = True
-    if len(lista) >4:
-        return False
-    
-    if si == "<if>":
-        x= True
+    if token.type =="if":
+        return True
     else:
-        x= False
-    #falta saber si las condiciones son verdaderas
-
-    return x
+        return False
 
 def Repeat( lista: list):
     """Executes B while condition is true. B can
@@ -57,180 +46,200 @@ def cond():
 
 #----------------------------commands----------------------------------
 
-#command defvar
 
-def defvar (lista:list):
+
+def isdefvar (token):
     """where name is a variable’s name and n is a number or a
     constant used initializing the variable."""
-    lista[0] = defvar
-    lista[1] =  name
-    lista[2] = n
-    x = True
-    if len(lista) >4:
-        x = False
-
-    if defvar !="<defvar>":
-        x= False
-    if str != name:
-        x= False
-    if int != type(n):
-        x= False
-    return x
+    
+    if token.type =="defvar":
+        return True
+    else:
+        return False
+def defvar(lista,i):
+    respuesta = False
+    if lista[i+1].type== 'nombre':
+        respuesta = True
+        i+=1
+        z=lista[i+1]
+        if lista[i+1].type == 'number':
+            respuesta =True
+            i+=1
+    return respuesta
 
 #command =
-def equals(name, n):
+def isequals(token):
     """where name is a variable’s name and n is a number or a constant
     The result of this instruction is to assign the value of the number n to the
     variable."""
-    lista[0] = equal
-    lista[1] =  name
-    lista[2] = n
-    x = True
-    if len(lista) >4:
-        x= False
-
-    if equal !="<=>":
-        x= False
-    if str != name:
-        x= False
-    if int != type(n):
-        x= False
-    return x
+    if token.type =="equals":
+        return True
+    else:
+        return False
+def equals(lista,i):
+    
+    respuesta = False
+    if lista[i+1].type== 'nombre':
+        respuesta = True
+        i+=1
+        z=lista[i+1]
+        if lista[i+1].type == 'number':
+            respuesta =True
+            i+=1
+    return respuesta
 #command move
-def move(n):
+def move(token):
     """where n is a number or a variable or a constant. The robot
     should move n steps forward."""
-    lista[0] = move
-    lista[1] = n
-    x = True
-    if len(lista) >2:
-        x= False
-
-    if move !="<move>":
-        x= False
-    if int != type(n):
-        x= False
-    return x
+    if token.type =="move":
+        return True
+    else:
+        return False
+    
+def move(lista,i):
+    respuesta = False
+    if lista[i+1].type == 'number':
+        respuesta =True
+        i+=1
+    return respuesta
+    
 #command skip
-def skip(lista:list):
+def skip(token):
     """where n is a number or a variable or a constant. The robot
     should jump n steps forward."""
-    lista[0] = skip
-    lista[1] = n
-    x = True
-    if len(lista) >2:
-        x= False
-
-    if skip !="<skip>":
-        x= False
-    if int != type(n):
-        x= False
-    return x
+    if token.type =="defvar":
+        return True
+    else:
+        return False
 #command turn 
-def turn(lista:list):
+def turn(token):
     """where D can be :left, :right, or :around (defined as constants).
     The robot should turn 90 degrees in the direction of the parameter in the
     first to cases, and 180 in the last case."""
-    lista[0] = turn
-    lista[1] = D
-    x = True
-    if len(lista) >2:
-        x= False
-
-    if turn !="<turn>":
-        x= False
-    if D !="<left>" or D !="<right>" or D!= "<around>":
-        x= False
+    if token.type =="turn":
+        return True
+    else:
+        return False
     return x
 #command face 
-def face(lista:list):
+def face(token):
     """where O can be :north, :south, :east, or :west (all constants).
     The robot should turn so that it ends up facing direction O."""
-    lista[0] = face
-    lista[1] = O
-    x = True
-    if len(lista) >2:
-        x= False
-
-    if face !="<face>":
-        x= False
-    if  O!="<north>" or O !="<south>" or O!= "<east>" or O!="<west>":
-        x= False
-    
-    return x
+    if token.type =="face":
+        return True
+    else:
+        return False
 # command put
-def put(lista:list):
+def isput(token):
     """where X corresponds to either :balloons or :chips, and n is a
     number or a variable. The Robot should put n X’s."""
-    lista[0] = put
-    lista[1] = X
-    lista[2] = n
-    if len(lista) >3:
-        x= False
+    if token.type =="put":
+        return True
+    else:
+        return False
+def put(lista,i):
+    respuesta = False
+    if lista[i+1].type== 'nombre':
+        respuesta = True
+        i+=1
+        z=lista[i+1]
+        if lista[i+1].type == 'number':
+            respuesta =True
+            i+=1
+    return respuesta
 
-    if put !="<put>":
-        x= False
-    if  X!="<balloons>" or X!="<chips>" :
-        x= False
-    return x
 #command pick
-def pick(lista:list):
+def ispick(token):
     """where X is either :balloons or :chips, and n is a number or
     a variable. The robot should pick n X’s."""
-    lista[0] = pick
-    lista[1] = X
-    lista[2] = n
-    x = True
-    if len(lista) >3:
-        x= False
-
-    if pick !="<pick>":
-        x= False
-    if  X!="<balloons>" or X!="<chips>" :
-        x= False
-    if int != type(n):
-        x= False
-    return x
+    if token.type =="pick":
+        return True
+    else:
+        return False
+    
+def pick(lista,i):
+    """where X is either :balloons or :chips, and n is a number or
+    a variable. The robot should pick n X’s."""
+    respuesta = False
+    if lista[i+1].type== 'nombre':
+        respuesta = True
+        i+=1
+        z=lista[i+1]
+        if lista[i+1].type == 'number':
+            respuesta =True
+            i+=1
+    return respuesta
 #command move-dir()
-def move_dir(lista:list):
+def ismove_dir(token):
     """where n is a number or a variable. D is one of :front,
     :right, :left, :back. The robot should move n positions to the front,
     to the left, the right or back and end up facing the same direction as it
     started."""
-    lista[0] = move
-    lista[1] = n
-    lista[2] = D
-    x = True
-    if len(lista) >3:
-        x= False
-
-    if pick !="<pick>":
-        x= False
-    if  D!="<front>" or D!="<right>" or D!="<left>" or D!="<back>":
-        x= False
-    if int != type(n):
-        x= False
-    return x
+    if token.type =="move_dir":
+        return True
+    else:
+        return False
+    
+def move_dir(lista,i):
+    respuesta = False
+    if lista[i+1].type== 'nombre':
+        respuesta = True
+        i+=1
+        z=lista[i+1]
+        if lista[i+1].type == 'number':
+            respuesta =True
+            i+=1
+    return respuesta
 #command run_dirs
-def run_dirs(lista:list):
+def run_dirs(token):
     """where Ds is a non-empty list of directions: :front, :right,
     :left, :back. The robot should move in the directions indicated by the
     list and end up facing the same direction as it started."""
-    lista[0] = run
-    lista[1] = Ds
-    
-    x = True
-    if len(lista) >2:
-        x= False
-
-    if run !="<run>":
-        x= False
-    if  Ds!="<front>" or Ds!="<right>" or Ds!="<left>" or Ds!="<back>":
-        x= False
-   
-    return x
+    if token.type =="defvar":
+        return True
+    else:
+        return False
 #command move-face
-def move_face(n,O):
+def ismove_face(token):
     """here n is a number or a variable. O is :north, :south,
     :west, or :east. The robot should face O and then move n steps."""
-    pass
+    if token.type =="move_face":
+        return True
+    else:
+        return False
+def move_face(lista,i):
+    respuesta = False
+    if lista[i+1].type== 'nombre':
+        respuesta = True
+        i+=1
+        z=lista[i+1]
+        if lista[i+1].type == 'number':
+            respuesta =True
+            i+=1
+    return respuesta
+    
+def iscommand(token):
+    if token.type =="defvar":
+        return True
+    elif token.type =="equals":
+        return True
+    elif token.type =="move":
+        return True
+    elif token.type =="skip":
+        return True
+    elif token.type =="turn":
+        return True
+    elif token.type =="face":
+        return True
+    elif token.type =="put":
+        return True
+    elif token.type =="pick":
+        return True
+    elif token.type =="move_dir":
+        return True
+    elif token.type =="run_dirs":
+        return True
+    elif token.type =="move_face":
+        return True
+    else:
+        return False

@@ -6,22 +6,17 @@ import commands as cd
 
 tokens = ["nombre", "move", "skip", "turn", "face", "put",
            "pick", "move_dir", "run_dirs", "move_face", "null", "conditional",
-           "loop", "repeat", "defun", "fun_call", "left_parenth", "right_parenth", "variable", "number", "if", "defvar", "cardinal", "direction", "comma", "i_objects"]
+           "loop", "repeat", "defun", "fun_call", "left_parenth", "right_parenth",
+            "variable", "number", "if", "defvar", "cardinal", "direction", "comma", "i_objects","equals"]
 
-
-
-"""
-for linea in archivo:
-                # Elimina los espacios en blanco al principio y al final de la línea
-                linea = linea.strip()
-                print(linea)"""
-
-
-    
+  
 
 
 def t_defvar(t):
     r'defvar'
+    return t
+def t_run_dirs(t):
+    r'equals'
     return t
 
 def t_run_dirs(t):
@@ -127,23 +122,118 @@ def print_menu():
     print("Bienvenido")
     print("1- Cargar archivo txt")
     print("0- Salir")
-
+respuesta = False
 working = True
 while working:
     print_menu()
     inputs = input('Seleccione una opción para continuar\n')
+    work = True
+    lista= []
     if int(inputs) == 1:
         file = str(input('digite el archivo sin txt: '))
         with open(f'{file}.txt', 'r') as archivo:
+        
             
-            lexer = lex.lex()
             for linea in archivo:
+                lexer = lex.lex()
                 lexer.input(linea)
                 while True:
                     tok = lexer.token()
                     if not tok:
-                        break  # No more input
-                    print(tok)
+                        break 
+                    lista.append(tok)   
+                
+                #contador de parentesis
+            contador =0
+            i =0
+            
+            while work and i< len(lista):
+                """if not tok:
+                    respuesta = False
+                    break """ # No more input 
+                z=lista[i]   
+                if lista[i].type == 'left_parenth':
+                        contador -=1
+                elif lista[i].type == 'right_parenth':
+                        contador +=1
+                #commandos
+                elif cd.iscommand(lista[i]) == True:
+                    if lista[i].type == 'defvar' or lista[i].type=='equals' or lista[i].type == 'put' or lista[i].type == 'pick' or lista[i].type=="move_dir" or lista[i].type=="move_face":
+                        if cd.isdefvar(lista[i]) ==True:
+                            cd.defvar(lista,i) 
+                        if cd.isequals(lista[i]) ==True:
+                            cd.equals(lista,i) 
+                        if cd.isput(lista[i]) ==True:
+                            cd.put(lista,i) 
+                        if cd.ispick(lista[i]) ==True:
+                            cd.pick(lista,i) 
+                        if cd.ismove_dir(lista[i]) ==True:
+                            cd.move_dir(lista,i)
+                        if cd.ismove_face(lista[i]) ==True:
+                            cd.move_face(lista,i) 
+                    else:
+                        if cd.ismove(lista[i]) ==True:
+                            cd.move(lista,i) 
+                        if cd.isdefvar(lista[i]) ==True:
+                            cd.defvar(lista,i) 
+                        if cd.isdefvar(lista[i]) ==True:
+                            cd.defvar(lista,i) 
+                        if cd.isdefvar(lista[i]) ==True:
+                            cd.defvar(lista,i) 
+                        if cd.isdefvar(lista[i]) ==True:
+                            cd.defvar(lista,i)
+                        if cd.isdefvar(lista[i]) ==True:
+                            cd.defvar(lista,i)
+
+
+                #conditional
+                elif cd.Conditional(lista[i]) ==True:
+                    if lista[i+1].type == 'left_parenth':
+                        contador -=1
+                        i+1
+                        if lista[i+1].type == 'condition':
+
+                            respuesta = True
+                            i+1
+                            if lista[i+1].type=='can-pick' or lista[i+1].type =='can-put':
+                                if lista[i+1].type =='':
+                                    pass
+                                    if lista[i+1].type =='':
+                                        pass
+                            else:
+                                if lista[i+1].type =='':
+                                    pass
+                        # B1 and B2 can be a single command or a Block
+                        if lista[i].type == 'right_parenth':
+                            contador +=1
+                            if lista[i+1].type == 'left_parenth':
+                                contador -=1
+                                if lista[i+1].type =='command':
+                                    pass
+                                    if lista[i+1].type =='':
+                                        pass
+                                    if lista[i].type == 'right_parenth':
+                                        contador +=1
+                                        if lista[i+1].type == 'left_parenth':
+                                            contador -=1
+                                            if lista[i+1].type =='command':
+                                                pass
+                                                if lista[i+1].type =='':
+                                                    pass
+                                                    if lista[i+1].type == 'left_parenth':
+                                                        contador -=1
+                                                        if lista[i+1].type == 'left_parenth':
+                                                            contador -=1
+
+                    
+                    
+                i+=1
+            if contador ==0 and respuesta ==True:
+                print("--------Yes--------")
+            else:
+                print("---------No-----------")
+        
+          
     elif int(inputs) ==0:
             working= False
 
