@@ -4,12 +4,12 @@ import commands as cd
 
 
 
-tokens = ["nombre", "move", "skip", "turn", "face", "put",
-           "pick", "move_dir", "run_dirs", "move_face", "null", "conditional",
+tokens = ["not_conditional","nombre", "move", "skip", "turn", "face", "put",
+           "pick", "move_dir", "run_dirs", "move_face", "null", 
            "loop", "repeat", "defun", "fun_call", "left_parenth", "right_parenth",
             "variable", "number", "if", "defvar", "cardinal", "direction", "comma", "i_objects","equals",
             "facing_conditional","blocked_conditional","put_conditional","pick_conditional","move_conditional",
-            "zero_conditional", "not_conditional"]
+            "zero_conditional", ]
 
 
 def t_facing_conditional(t):
@@ -30,7 +30,7 @@ def t_pick_conditional(t):
 def t_zero_conditional(t):
     r'isZero\?'
     return t
-def not_conditional(t):
+def t_not_conditional(t):
     r'not'
     return t
 
@@ -111,9 +111,6 @@ def t_number(t):
     r'\d+'
     return t
 
-def t_conditional(t):
-    r'facing\?|blocked\?|can-put\?|can-move\?|isZero\?|not'
-    return t
 
 def t_cardinal(t):
     r':north|:west|:south|:east'
@@ -184,6 +181,7 @@ while working:
                    
                 #commandos
                 elif cd.iscommand(lista[i]) == True:
+                    respuesta = False
                     if lista[i].type == 'defvar' or lista[i].type=='equals' or lista[i].type == 'put' or lista[i].type == 'pick' or lista[i].type=="move_dir" or lista[i].type=="move_face":
                         if cd.isdefvar(lista[i]) ==True:
                             respuesta,i =cd.defvar(lista,i) 
@@ -210,8 +208,7 @@ while working:
                             respuesta,i=cd.run_dirs(lista,i)
                         if cd.isnull(lista[i]) ==True:
                             respuesta= True
-                        else:
-                            respuesta= False
+                        
 
 
                 #conditional

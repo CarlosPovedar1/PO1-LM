@@ -44,7 +44,7 @@ def FunctionDefinition(defun, name, Params,Cs):
 def cond(lista,i):
     "condicion"
     respuesta = False
-    
+    contador= 0
     if lista[i].type == 'facing_conditional':
         respuesta,i =facing_conditional(lista,i)
     elif lista[i].type == 'blocked_conditional':
@@ -59,7 +59,17 @@ def cond(lista,i):
     elif lista[i].type == 'zero_conditional':
         respuesta,i =zero_conditional(lista,i)
     elif lista[i].type == 'not_conditional':
+        if lista[i+1].type == 'left_parenth':
+            contador-=1
+            i+=1
         respuesta,i =not_conditional(lista,i)
+        if lista[i+1].type =='right_parenth':
+            contador +=1
+            i+=1
+        if contador != 0:
+            respuesta= False
+        
+        
     return respuesta,i
 
     
@@ -104,9 +114,9 @@ def zero_conditional(lista,i):
     return respuesta,i
 def not_conditional(lista,i):
     respuesta = False
-    if lista[i+1].type == 'conditional':
+    a,i =cond(lista,i+1)
+    if a == True:
         respuesta =True
-        i+=1
     return respuesta,i
 
 #----------------------------commands----------------------------------
