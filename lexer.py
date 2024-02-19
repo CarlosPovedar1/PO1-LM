@@ -7,9 +7,33 @@ import commands as cd
 tokens = ["nombre", "move", "skip", "turn", "face", "put",
            "pick", "move_dir", "run_dirs", "move_face", "null", "conditional",
            "loop", "repeat", "defun", "fun_call", "left_parenth", "right_parenth",
-            "variable", "number", "if", "defvar", "cardinal", "direction", "comma", "i_objects","equals"]
+            "variable", "number", "if", "defvar", "cardinal", "direction", "comma", "i_objects","equals",
+            "facing_conditional","blocked_conditional","put_conditional","pick_conditional","move_conditional",
+            "zero_conditional", "not_conditional"]
 
-  
+
+def t_facing_conditional(t):
+    r'facing\?'
+    return t
+def t_blocked_conditional(t):
+    r'blocked\?'
+    return t
+def t_put_conditional(t):
+    r'can-put\?'
+    return t
+def t_move_conditional(t):
+    r'can-move\?'
+    return t
+def t_pick_conditional(t):
+    r'can-pick\?'
+    return t
+def t_zero_conditional(t):
+    r'isZero\?'
+    return t
+def not_conditional(t):
+    r'not'
+    return t
+
 
 
 def t_defvar(t):
@@ -151,11 +175,13 @@ while working:
                 """if not tok:
                     respuesta = False
                     break """ # No more input 
-                z=lista[i]   
+                z=lista[i]
                 if lista[i].type == 'left_parenth':
                         contador -=1
+                       
                 elif lista[i].type == 'right_parenth':
                         contador +=1
+                   
                 #commandos
                 elif cd.iscommand(lista[i]) == True:
                     if lista[i].type == 'defvar' or lista[i].type=='equals' or lista[i].type == 'put' or lista[i].type == 'pick' or lista[i].type=="move_dir" or lista[i].type=="move_face":
@@ -189,43 +215,52 @@ while working:
 
 
                 #conditional
+                
                 elif cd.Conditional(lista[i]) ==True:
-                    if lista[i+1].type == 'left_parenth':
-                        contador -=1
-                        i+1
-                        if lista[i+1].type == 'condition':
-
-                            respuesta = True
-                            i+1
-                            if lista[i+1].type=='can-pick' or lista[i+1].type =='can-put':
-                                if lista[i+1].type =='':
-                                    pass
-                                    if lista[i+1].type =='':
-                                        pass
-                            else:
-                                if lista[i+1].type =='':
-                                    pass
-                        # B1 and B2 can be a single command or a Block
-                        if lista[i].type == 'right_parenth':
-                            contador +=1
+                        if  lista[i+1].type == 'left_parenth':
+                            contador-=1
+                            i+=1
+                        
+                        r,i = cd.cond(lista,i+1)
+                        if r==True:
+                            if lista[i+1].type =='right_parenth':
+                                contador+=1
+                                i+=1
                             if lista[i+1].type == 'left_parenth':
-                                contador -=1
-                                if lista[i+1].type =='command':
-                                    pass
-                                    if lista[i+1].type =='':
-                                        pass
-                                    if lista[i].type == 'right_parenth':
-                                        contador +=1
-                                        if lista[i+1].type == 'left_parenth':
-                                            contador -=1
-                                            if lista[i+1].type =='command':
-                                                pass
-                                                if lista[i+1].type =='':
-                                                    pass
-                                                    if lista[i+1].type == 'left_parenth':
-                                                        contador -=1
-                                                        if lista[i+1].type == 'left_parenth':
-                                                            contador -=1
+                                contador-=1
+                                i+=1
+                                z,i = cd.function(lista,i)
+                                if z==True:
+                                    if lista[i+1].type =='right_parenth':
+                                        contador+=1
+                                        i+=1
+                                    if lista[i+1].type == 'left_parenth':
+                                        contador-=1
+                                        i+=1
+                                        f= lista[i]
+                                        z,i = cd.function(lista,i)
+                                        if cd.function(lista,i+1)==True :
+                                            if lista[i+1].type =='right_parenth':
+                                                contador+=1
+                                                i+=1
+                                            if lista[i+1].type == 'left_parenth':
+                                                contador-=1
+                                                i+=1
+                                        elif cd.isnull(lista[i+1]):
+                                            i+=1
+                                            if lista[i+1].type =='right_parenth':
+                                                contador+=1
+                                                i+=1
+                                            if lista[i+1].type =='right_parenth':
+                                                contador+=1
+                                                i+=1
+                                            
+                        else:
+                            respuesta =False
+                        
+                                
+                       
+                        
 
                 
                     

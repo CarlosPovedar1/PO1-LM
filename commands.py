@@ -40,9 +40,74 @@ def FunctionDefinition(defun, name, Params,Cs):
     #A function call is the function’s name followed by parameter values within
     #parenthesis, as in (funName a1 a2 a3).
     pass
-def cond():
+#------------------------condicionals----------------------------------------
+def cond(lista,i):
     "condicion"
-    pass
+    respuesta = False
+    
+    if lista[i].type == 'facing_conditional':
+        respuesta,i =facing_conditional(lista,i)
+    elif lista[i].type == 'blocked_conditional':
+        respuesta = True
+        i+=1
+    elif lista[i].type == 'put_conditional':
+        respuesta,i =put_conditional(lista,i)
+    elif lista[i].type == 'pick_conditional':
+        respuesta,i =pick_conditional(lista,i)
+    elif lista[i].type == 'move_conditional':
+        respuesta,i =move_conditional(lista,i)
+    elif lista[i].type == 'zero_conditional':
+        respuesta,i =zero_conditional(lista,i)
+    elif lista[i].type == 'not_conditional':
+        respuesta,i =not_conditional(lista,i)
+    return respuesta,i
+
+    
+def facing_conditional(lista,i):
+    respuesta = False
+    if lista[i+1].type == 'cardinal':
+        respuesta =True
+        i+=1
+    return respuesta,i
+def put_conditional(lista,i):
+    respuesta = False
+    if lista[i+1].type== 'i_objects':
+        respuesta = True
+        i+=1
+        z=lista[i+1]
+        if lista[i+1].type == 'number':
+            respuesta =True
+            i+=1
+    return respuesta,i
+
+def pick_conditional(lista,i):
+    respuesta = False
+    if lista[i+1].type== 'i_objects':
+        respuesta = True
+        i+=1
+        z=lista[i+1]
+        if lista[i+1].type == 'number':
+            respuesta =True
+            i+=1
+    return respuesta,i
+def move_conditional(lista,i):
+    respuesta = False
+    if lista[i+1].type == 'cardinal':
+        respuesta =True
+        i+=1
+    return respuesta,i
+def zero_conditional(lista,i):
+    respuesta = False
+    if lista[i+1].type == 'number':
+        respuesta =True
+        i+=1
+    return respuesta,i
+def not_conditional(lista,i):
+    respuesta = False
+    if lista[i+1].type == 'conditional':
+        respuesta =True
+        i+=1
+    return respuesta,i
 
 #----------------------------commands----------------------------------
 
@@ -86,7 +151,7 @@ def equals(lista,i):
         if lista[i+1].type == 'number':
             respuesta =True
             i+=1
-    return respuesta
+    return respuesta,i
 #command move
 def ismove(token):
     """where n is a number or a variable or a constant. The robot
@@ -101,7 +166,7 @@ def move(lista,i):
     if lista[i+1].type == 'number':
         respuesta =True
         i+=1
-    return respuesta
+    return respuesta,i
 
     
 #command skip
@@ -117,7 +182,7 @@ def skip(lista,i):
     if lista[i+1].type == 'number':
         respuesta =True
         i+=1
-    return respuesta
+    return respuesta,i
 #command turn 
 def isturn(token):
     """where D can be :left, :right, or :around (defined as constants).
@@ -132,7 +197,7 @@ def turn(lista,i):
     if lista[i+1].type == 'direction':
         respuesta =True
         i+=1
-    return respuesta
+    return respuesta,i
 
 
 
@@ -151,7 +216,7 @@ def face(lista,i):
     if lista[i+1].type == 'cardinal':
         respuesta =True
         i+=1
-    return respuesta
+    return respuesta,i
 # command put
 def isput(token):
     """where X corresponds to either :balloons or :chips, and n is a
@@ -169,7 +234,7 @@ def put(lista,i):
         if lista[i+1].type == 'number':
             respuesta =True
             i+=1
-    return respuesta
+    return respuesta,i
 
 #command pick
 def ispick(token):
@@ -192,7 +257,7 @@ def pick(lista,i):
         if lista[i+1].type == 'number':
             respuesta =True
             i+=1
-    return respuesta
+    return respuesta,i
 #command move-dir()
 def ismove_dir(token):
     """where n is a number or a variable. D is one of :front,
@@ -213,7 +278,7 @@ def move_dir(lista,i):
         if lista[i+1].type == 'cardinal':
             respuesta =True
             i+=1
-    return respuesta
+    return respuesta,i
 #command run_dirs
 def isrun_dirs(token):
     """where Ds is a non-empty list of directions: :front, :right,
@@ -228,7 +293,7 @@ def run_dirs(lista,i):
     if lista[i+1].type == 'direction':
         respuesta =True
         i+=1
-    return respuesta
+    return respuesta,i
 
 #command move-face
 def ismove_face(token):
@@ -247,12 +312,13 @@ def move_face(lista,i):
         if lista[i+1].type == 'cardinal':
             respuesta =True
             i+=1
-    return respuesta
+    return respuesta,i
 def isnull(token):
     if token.type =="null":
         return True
     else:
         return False
+        
 
     
 def iscommand(token):
@@ -280,3 +346,40 @@ def iscommand(token):
         return True
     else:
         return False
+    
+
+def function(lista, i):
+    z = lista[i]
+    f= lista[i+1]
+    respuesta= False
+    if iscommand(lista[i+1]) == True:
+                    if lista[i+1].type == 'defvar' or lista[i+1].type=='equals' or lista[i+1].type == 'put' or lista[i+1].type == 'pick' or lista[i+1].type=="move_dir" or lista[i+1].type=="move_face":
+                        if isdefvar(lista[i+1]) ==True:
+                            respuesta,i =defvar(lista,i+1) 
+                        if isequals(lista[i+1]) ==True:
+                            respuesta,i= equals(lista,i+1) 
+                        if isput(lista[i+1]) ==True:
+                            respuesta,i =put(lista,i+1) 
+                        if ispick(lista[i+1]) ==True:
+                            respuesta,i =pick(lista,i+1) 
+                        if ismove_dir(lista[i+1]) ==True:
+                            respuesta,i =move_dir(lista,i+1)
+                        if ismove_face(lista[i+1]) ==True:
+                            respuesta,i=move_face(lista,i+1) 
+                    else:
+                        if ismove(lista[i+1]) ==True:
+                            respuesta,i= move(lista,i+1) 
+                        if isskip(lista[i+1]) ==True:
+                            respuesta,i=skip(lista,i+1) 
+                        if isturn(lista[i+1]) ==True:
+                            respuesta,i= turn(lista,i+1) 
+                        if isface(lista[i+1]) ==True:
+                            respuesta,i= face(lista,i+1) 
+                        if isrun_dirs(lista[i+1]) ==True:
+                            respuesta,i=run_dirs(lista,i+1)
+                        if isnull(lista[i+1]) ==True:
+                            respuesta= True
+    return respuesta,i
+
+
+
