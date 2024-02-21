@@ -391,5 +391,44 @@ def function(lista, i):
                             respuesta= True
     return respuesta,i
 
+Defun ={}
+
+def defun(lista,i):
+    respuesta = False
+    parentesis =0
+    con =0
+    if lista[i+1].type =="nombre":
+            Defun[(lista[i+1]).value] =""
+            i+=1
+   
+            if lista[i+1].type =="left_parenth":
+                i+=1
+                parentesis-=1
+                
+                a = lista[i+1].type == "nombre"
+                while(lista[i+1].type == "nombre"):
+                    con +=1
+                    i+=1
+                    Defun[(lista[i+1])]= con
+                
+                if lista[i+1].type == "right_parenth":
+                    i+=1
+                    parentesis-=1
+                   
 
 
+    return respuesta,i
+            
+def definida(lista,i):
+    respuesta = False
+    if len(Defun)==0:
+        return respuesta
+    else:
+        for j in Defun:
+            if j == lista[i].value:
+                respuesta = True
+                cont = lista[j]
+                while(j<cont):
+                    if lista[i+1].type=="Nombre":
+                        repuesta = True
+                    j+=1

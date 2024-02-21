@@ -251,10 +251,11 @@ while working:
                                             if lista[i+1].type =='right_parenth':
                                                 contador+=1
                                                 i+=1
-                                            
+                                          
                         else:
                             respuesta =False
-                        
+                elif lista[i].type =="defun": 
+                    respuesta,i = cd.defun(lista,i)      
                                 
                        
                         
