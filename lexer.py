@@ -9,7 +9,7 @@ tokens = ["not_conditional","nombre", "move", "skip", "turn", "face", "put",
            "loop", "repeat", "defun", "fun_call", "left_parenth", "right_parenth",
             "variable", "number", "if", "defvar", "cardinal", "direction", "comma", "i_objects","equals",
             "facing_conditional","blocked_conditional","put_conditional","pick_conditional","move_conditional",
-            "zero_conditional", ]
+            "zero_conditional" ]
 
 
 def t_facing_conditional(t):
@@ -138,6 +138,7 @@ def t_error(t):
 
 t_ignore = ' \t|\n'
 
+Defun ={}
 
 def print_menu():
     print("Bienvenido")
@@ -255,9 +256,18 @@ while working:
                         else:
                             respuesta =False
                 elif lista[i].type =="defun": 
-                    respuesta,i = cd.defun(lista,i)      
+                    respuesta,i,Defun = cd.defun(lista,i)      
                                 
-                       
+                elif len(Defun) >= 0:
+                    for j in Defun:
+                        f = lista[i+1]
+                        x = lista[i].value
+                        if lista[i].value == j:
+                            respuesta,i = cd.definida(lista,i)
+                elif lista[i].type =="repeat":
+                    cd.Repeat(lista,i)    
+                elif lista[i].type =="loop":
+                    cd.loop(lista,i) 
                         
 
                 

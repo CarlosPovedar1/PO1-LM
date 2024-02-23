@@ -21,4 +21,4 @@
  (defun pickAllB ()
  (pick :balloons balloonsHere )
 )
-( run-dirs :left :up :left :down :right )
+(run-dirs :front :right :left )

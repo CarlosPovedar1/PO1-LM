@@ -3,7 +3,7 @@
 
 #-->(null): a instruction that does not do anything
 
-
+variablesdefinidas =["Dim","myXpos","myYpos","myChips","myBalloons","balloonsHere","ChipsHere","Spaces"]
 
 
 #control structure
@@ -15,31 +15,30 @@ def Conditional(token):
     else:
         return False
 
-def Repeat( lista: list):
-    """Executes B while condition is true. B can
-    be a single command or a block."""
-    lista[0] =loop
-    x = True
-    
-    if len(lista) >4:
-        return False
-    if loop != "<loop>":
-        return False
     #falta saber la condicion de loop 
 
 
-def RepeatTimes(n, B):
+def Repeat(lista, i):
     """ where n is a variable or a number. B is
     executed n times. B is a cingle command or a block."""
-    pass
-def FunctionDefinition(defun, name, Params,Cs):
-    """where name is the function
-    name, (Params) is a list of parameter names for the function (separated
-    by spaces) and Cs is a sequence of commands for the function."""
-    pass
-    #A function call is the function’s name followed by parameter values within
-    #parenthesis, as in (funName a1 a2 a3).
-    pass
+    respuesta = False
+    if lista[i+1].type== 'number':
+        respuesta = True
+        i+=1
+    return respuesta,i
+
+def loop(lista,i):
+    respuesta = False
+    if lista[i+1].type== 'nombre' or lista[i+1].type== 'number':
+        respuesta = True
+        i+=1
+
+        resp,i = function(lista,i)
+        if  resp==True:
+            respuesta =True
+        
+    return respuesta,i
+
 #------------------------condicionals----------------------------------------
 def cond(lista,i):
     "condicion"
@@ -398,7 +397,8 @@ def defun(lista,i):
     parentesis =0
     con =0
     if lista[i+1].type =="nombre":
-            Defun[(lista[i+1]).value] =""
+            Defun[(lista[i+1]).value] =0
+            key =(lista[i+1]).value
             i+=1
    
             if lista[i+1].type =="left_parenth":
@@ -409,15 +409,16 @@ def defun(lista,i):
                 while(lista[i+1].type == "nombre"):
                     con +=1
                     i+=1
-                    Defun[(lista[i+1])]= con
+                    Defun[key]= con
                 
                 if lista[i+1].type == "right_parenth":
                     i+=1
                     parentesis-=1
                    
+    if parentesis!=0:
+        respuesta = False
 
-
-    return respuesta,i
+    return respuesta,i,Defun
             
 def definida(lista,i):
     respuesta = False
@@ -427,8 +428,16 @@ def definida(lista,i):
         for j in Defun:
             if j == lista[i].value:
                 respuesta = True
-                cont = lista[j]
-                while(j<cont):
-                    if lista[i+1].type=="Nombre":
-                        repuesta = True
-                    j+=1
+                cont = Defun[j]
+                z =0
+                while(z<cont):
+                    if lista[i+1].type=="nombre" or lista[i+1].type=="number":
+                        respuesta = True
+                    i+=1
+                    z+=1
+                if cont==0:
+                    respuesta = True
+                    
+
+    return respuesta,i
+    
