@@ -117,7 +117,7 @@ def t_cardinal(t):
     return t
     
 def t_direction(t):
-    r':left|:right|:around'
+    r':left|:right|:around|:front|:back'
     return t
 
 def t_comma(t):
@@ -145,7 +145,8 @@ def print_menu():
     print("1- Cargar archivo txt")
     print("0- Salir")
 respuesta = False
-working = True
+working = True 
+b= 0
 while working:
     print_menu()
     inputs = input('Seleccione una opción para continuar\n')
@@ -273,6 +274,7 @@ while working:
                 
                     
                 i+=1
+                
             if contador ==0 and respuesta ==True:
                 print("--------Yes--------")
             else:
