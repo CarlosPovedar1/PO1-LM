@@ -146,7 +146,7 @@ def print_menu():
     print("0- Salir")
 respuesta = False
 working = True 
-b= 0
+
 while working:
     print_menu()
     inputs = input('Seleccione una opción para continuar\n')
@@ -176,10 +176,12 @@ while working:
                     break """ # No more input 
                 z=lista[i]
                 if lista[i].type == 'left_parenth':
+                        print(lista[i])
                         contador -=1
                        
                 elif lista[i].type == 'right_parenth':
                         contador +=1
+                        print(lista[i])
                    
                 #commandos
                 elif cd.iscommand(lista[i]) == True:
@@ -257,18 +259,20 @@ while working:
                         else:
                             respuesta =False
                 elif lista[i].type =="defun": 
-                    respuesta,i,Defun = cd.defun(lista,i)      
-                                
-                elif len(Defun) >= 0:
-                    for j in Defun:
-                        f = lista[i+1]
-                        x = lista[i].value
-                        if lista[i].value == j:
-                            respuesta,i = cd.definida(lista,i)
+                    respuesta,i,Defun = cd.defun(lista,i)  
+                if i ==103:
+                    f=0
                 elif lista[i].type =="repeat":
                     cd.Repeat(lista,i)    
                 elif lista[i].type =="loop":
-                    cd.loop(lista,i) 
+                    cd.loop(lista,i)     
+                                
+                elif len(Defun) >= 0:
+                    for j in Defun:
+
+                        if lista[i].value == j:
+                            respuesta,i = cd.definida(lista,i)
+                
                         
 
                 
