@@ -44,27 +44,29 @@ def cond(lista,i):
     "condicion"
     respuesta = False
     contador= 0
-    if lista[i].type == 'facing_conditional':
+    if lista[i+1].type == 'facing_conditional':
         respuesta,i =facing_conditional(lista,i)
-    elif lista[i].type == 'blocked_conditional':
+    elif lista[i+1].type == 'blocked_conditional':
         respuesta = True
         i+=1
-    elif lista[i].type == 'put_conditional':
+    elif lista[i+1].type == 'put_conditional':
         respuesta,i =put_conditional(lista,i)
-    elif lista[i].type == 'pick_conditional':
+    elif lista[i+1].type == 'pick_conditional':
         respuesta,i =pick_conditional(lista,i)
-    elif lista[i].type == 'move_conditional':
+    elif lista[i+1].type == 'move_conditional':
         respuesta,i =move_conditional(lista,i)
-    elif lista[i].type == 'zero_conditional':
+    elif lista[i+1].type == 'zero_conditional':
         respuesta,i =zero_conditional(lista,i)
-    elif lista[i].type == 'not_conditional':
+    elif lista[i+1].type == 'not_conditional':
         if lista[i+1].type == 'left_parenth':
             contador-=1
             i+=1
         respuesta,i =not_conditional(lista,i)
+        
         if lista[i+1].type =='right_parenth':
             contador +=1
-            i+=1
+            i +=1
+            
         if contador != 0:
             respuesta= False
         
@@ -107,13 +109,13 @@ def move_conditional(lista,i):
     return respuesta,i
 def zero_conditional(lista,i):
     respuesta = False
-    if lista[i+1].type == 'number':
+    if lista[i+1].type == 'number' or lista[i+1].type == 'nombre':
         respuesta =True
         i+=1
     return respuesta,i
 def not_conditional(lista,i):
     respuesta = False
-    a,i =cond(lista,i+1)
+    a,i =cond(lista,i)
     if a == True:
         respuesta =True
     return respuesta,i

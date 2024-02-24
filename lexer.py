@@ -176,12 +176,12 @@ while working:
                     break """ # No more input 
                 z=lista[i]
                 if lista[i].type == 'left_parenth':
-                        print(lista[i])
+                   
                         contador -=1
                        
                 elif lista[i].type == 'right_parenth':
                         contador +=1
-                        print(lista[i])
+                        
                    
                 #commandos
                 elif cd.iscommand(lista[i]) == True:
@@ -227,6 +227,9 @@ while working:
                             if lista[i+1].type =='right_parenth':
                                 contador+=1
                                 i+=1
+                            elif lista[i].type =='right_parenth':
+                                contador+=1
+                                i+=1
                             if lista[i+1].type == 'left_parenth':
                                 contador-=1
                                 i+=1
@@ -235,6 +238,7 @@ while working:
                                     if lista[i+1].type =='right_parenth':
                                         contador+=1
                                         i+=1
+                                   
                                     if lista[i+1].type == 'left_parenth':
                                         contador-=1
                                         i+=1
@@ -260,7 +264,7 @@ while working:
                             respuesta =False
                 elif lista[i].type =="defun": 
                     respuesta,i,Defun = cd.defun(lista,i)  
-                if i ==103:
+                if i ==111:
                     f=0
                 elif lista[i].type =="repeat":
                     cd.Repeat(lista,i)    
@@ -278,7 +282,7 @@ while working:
                 
                     
                 i+=1
-                
+            
             if contador ==0 and respuesta ==True:
                 print("--------Yes--------")
             else:
